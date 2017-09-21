@@ -37,10 +37,13 @@ $ go get -v "github.com/jbenet/go-base58"
 $ go get -v "github.com/jessevdk/go-flags"
 ```
 - Cloning and building
-`$ git clone https://github.com/Nhoya/multibase && cd multibase`
-`$ go build`
+
+```
+$ git clone https://github.com/Nhoya/multibase && cd multibase
+$ go build
+```
 
 - Installing
-`# mv multibase /usr/local/bin/mb
-```
+
+`# mv multibase /usr/local/bin/mb`
 
