@@ -11,6 +11,7 @@ Supported encoding and decoding methods:
 - [x] base58
 - [x] base64
 - [x] URL-compatible base64
+- [x] PostScript/PDF base85
 
 ## Usage
 
@@ -22,7 +23,8 @@ Application Options:
       --b32     Generate base32 of given string/file
       --b58     Generate base58 of given string/file
       --b64     Generate base64 of given string/file
-      --b64u    Generate URL- compatible base64
+      --b64u    Generate URL-compatible base64
+      --b85     Generate Abobe's PostScript/PDF base85 of given string/fle
   -d, --decode  Decode data
 
 Help Options:

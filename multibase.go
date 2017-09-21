@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/ascii85"
 	"encoding/base32"
 	"encoding/base64"
 	"fmt"
@@ -14,7 +15,8 @@ var opts struct {
 	Base32    bool `long:"b32" description:"Generate base32 of given string/file"`
 	Base58    bool `long:"b58" description:"Generate base58 of given string/file"`
 	Base64    bool `long:"b64" description:"Generate base64 of given string/file"`
-	Base64URL bool `long:"b64u" description:"Generate URL- compatible base64"`
+	Base64URL bool `long:"b64u" description:"Generate URL-compatible base64"`
+	Base85    bool `long:"b85" description:"Generate Abobe's PostScript/PDF base85 of given string/fle"`
 	Decode    bool `short:"d" long:"decode" description:"Decode data"`
 }
 
@@ -60,6 +62,17 @@ func main() {
 			result = string(byteResult[:])
 		} else {
 			result = base64.URLEncoding.EncodeToString(target)
+		}
+	} else if opts.Base85 {
+		if opts.Decode {
+			buffer := make([]byte, len(target))
+			ascii85.Decode(buffer, target, true)
+			result = string(buffer)
+
+		} else {
+			buffer := make([]byte, ascii85.MaxEncodedLen(len(target)))
+			ascii85.Encode(buffer, target)
+			result = string(buffer)
 		}
 	}
 
