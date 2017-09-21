@@ -22,7 +22,6 @@ Application Options:
       --b58      Generate base58 of given string/file
       --b64      Generate base64 of given string/file
   -d, --decode   Decode data
-  -v, --version  Print version
 
 Help Options:
   -h, --help     Show this help message
