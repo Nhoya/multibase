@@ -11,11 +11,10 @@ import (
 )
 
 var opts struct {
-	Base32  bool `long:"b32" description:"Generate base32 of given string/file"`
-	Base58  bool `long:"b58" description:"Generate base58 of given string/file"`
-	Base64  bool `long:"b64" description:"Generate base64 of given string/file"`
-	Decode  bool `short:"d" long:"decode" description:"Decode data"`
-	Version bool `short:"v" long:"version" description:"Print version"`
+	Base32 bool `long:"b32" description:"Generate base32 of given string/file"`
+	Base58 bool `long:"b58" description:"Generate base58 of given string/file"`
+	Base64 bool `long:"b64" description:"Generate base64 of given string/file"`
+	Decode bool `short:"d" long:"decode" description:"Decode data"`
 }
 
 func main() {
@@ -41,15 +40,13 @@ func main() {
 		} else {
 			result = base32.StdEncoding.EncodeToString(target)
 		}
-	}
-	if opts.Base58 {
+	} else if opts.Base58 {
 		if opts.Decode {
 			result = string(b58.DecodeAlphabet(targetString, b58.BTCAlphabet)[:])
 		} else {
 			result = b58.EncodeAlphabet(target, b58.BTCAlphabet)
 		}
-	}
-	if opts.Base64 {
+	} else if opts.Base64 {
 		if opts.Decode {
 			byteResult, _ = base64.StdEncoding.DecodeString(targetString)
 			result = string(byteResult[:])
