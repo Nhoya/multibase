@@ -10,21 +10,24 @@ Supported encoding and decoding methods:
 - [x] base32
 - [x] base58
 - [x] base64
+- [x] URL-compatible base64
 
 ## Usage
 
 ```
 Usage:
-  multibase | mb [OPTIONS]
+  multibase [OPTIONS]
 
 Application Options:
-      --b32      Generate base32 of given string/file
-      --b58      Generate base58 of given string/file
-      --b64      Generate base64 of given string/file
-  -d, --decode   Decode data
+      --b32     Generate base32 of given string/file
+      --b58     Generate base58 of given string/file
+      --b64     Generate base64 of given string/file
+      --b64u    Generate URL- compatible base64
+  -d, --decode  Decode data
 
 Help Options:
-  -h, --help     Show this help message
+  -h, --help    Show this help message
+
 ```
 ## Installation
 
