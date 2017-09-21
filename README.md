@@ -24,7 +24,7 @@ Application Options:
       --b58     Generate base58 of given string/file
       --b64     Generate base64 of given string/file
       --b64u    Generate URL-compatible base64
-      --b85     Generate Abobe's PostScript/PDF base85 of given string/fle
+      --b85     Generate Abobe's PostScript/PDF base85 of given string/file
   -d, --decode  Decode data
 
 Help Options:

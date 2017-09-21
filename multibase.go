@@ -16,7 +16,7 @@ var opts struct {
 	Base58    bool `long:"b58" description:"Generate base58 of given string/file"`
 	Base64    bool `long:"b64" description:"Generate base64 of given string/file"`
 	Base64URL bool `long:"b64u" description:"Generate URL-compatible base64"`
-	Base85    bool `long:"b85" description:"Generate Abobe's PostScript/PDF base85 of given string/fle"`
+	Base85    bool `long:"b85" description:"Generate Abobe's PostScript/PDF base85 of given string/file"`
 	Decode    bool `short:"d" long:"decode" description:"Decode data"`
 }
 
