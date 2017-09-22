@@ -20,6 +20,7 @@ Usage:
   multibase [OPTIONS]
 
 Application Options:
+  -f, --file=   Specify input file
       --b32     Generate base32 of given string/file
       --b58     Generate base58 of given string/file
       --b64     Generate base64 of given string/file
@@ -29,7 +30,6 @@ Application Options:
 
 Help Options:
   -h, --help    Show this help message
-
 ```
 ## Installation
 

@@ -12,29 +12,34 @@ import (
 )
 
 var opts struct {
-	Base32    bool `long:"b32" description:"Generate base32 of given string/file"`
-	Base58    bool `long:"b58" description:"Generate base58 of given string/file"`
-	Base64    bool `long:"b64" description:"Generate base64 of given string/file"`
-	Base64URL bool `long:"b64u" description:"Generate URL-compatible base64"`
-	Base85    bool `long:"b85" description:"Generate Abobe's PostScript/PDF base85 of given string/file"`
-	Decode    bool `short:"d" long:"decode" description:"Decode data"`
+	File      string `short:"f" long:"file" description:"Specify input file"`
+	Base32    bool   `long:"b32" description:"Generate base32 of given string/file"`
+	Base58    bool   `long:"b58" description:"Generate base58 of given string/file"`
+	Base64    bool   `long:"b64" description:"Generate base64 of given string/file"`
+	Base64URL bool   `long:"b64u" description:"Generate URL-compatible base64"`
+	Base85    bool   `long:"b85" description:"Generate Abobe's PostScript/PDF base85 of given string/file"`
+	Decode    bool   `short:"d" long:"decode" description:"Decode data"`
 }
 
 func main() {
 	result := ""
+	var target []byte
 	var byteResult []byte
 	_, err := flags.Parse(&opts)
 	if err != nil {
 		os.Exit(1)
 	}
+	parser := flags.NewParser(&opts, flags.Default)
 
-	target, _ := ioutil.ReadAll(os.Stdin)
-	targetString := string(target[:])
-
-	if target == nil {
-		fmt.Println("You must specify input")
-		os.Exit(1)
+	if opts.File != "" {
+		target, err = ioutil.ReadFile(opts.File)
+		if err != nil {
+			fmt.Println(err)
+		}
+	} else {
+		target, _ = ioutil.ReadAll(os.Stdin)
 	}
+	targetString := string(target[:])
 
 	if opts.Base32 {
 		if opts.Decode {
@@ -74,6 +79,8 @@ func main() {
 			ascii85.Encode(buffer, target)
 			result = string(buffer)
 		}
+	} else {
+		parser.WriteHelp(os.Stderr)
 	}
 
 	if result != "" {
