@@ -17,7 +17,7 @@ Supported encoding and decoding methods:
 
 ```
 Usage:
-  multibase [OPTIONS]
+  mb  [OPTIONS]
 
 Application Options:
   -f, --file=   Specify input file
@@ -45,7 +45,10 @@ $ git clone https://github.com/Nhoya/multibase && cd multibase
 $ go build
 ```
 
+The package is also available on [AUR](https://aur.archlinux.org/packages/multibase/)
+
 - Installing
 
 `# mv multibase /usr/local/bin/mb`
+
 
