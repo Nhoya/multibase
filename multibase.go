@@ -5,10 +5,11 @@ import (
 	"encoding/base32"
 	"encoding/base64"
 	"fmt"
-	b58 "github.com/jbenet/go-base58"
-	"github.com/jessevdk/go-flags"
 	"io/ioutil"
 	"os"
+
+	b58 "github.com/jbenet/go-base58"
+	"github.com/jessevdk/go-flags"
 )
 
 var opts struct {
@@ -21,69 +22,100 @@ var opts struct {
 	Decode    bool   `short:"d" long:"decode" description:"Decode data"`
 }
 
+type Base struct {
+	Target string
+	Result string
+	Decode bool
+}
+
 func main() {
-	result := ""
-	var target []byte
-	var byteResult []byte
+
+	out := Base{}
+
+	//parsing flags
 	_, err := flags.Parse(&opts)
 	if err != nil {
 		os.Exit(1)
 	}
 	parser := flags.NewParser(&opts, flags.Default)
 
+	//if the file flag is set use it as target, otherwhise get the string
 	if opts.File != "" {
-		target, err = ioutil.ReadFile(opts.File)
+		buf, err := ioutil.ReadFile(opts.File)
 		if err != nil {
 			fmt.Println(err)
 		}
+		out.Target = string(buf)
+		fmt.Println(out.Target)
 	} else {
-		target, _ = ioutil.ReadAll(os.Stdin)
+		buf, _ := ioutil.ReadAll(os.Stdin)
+		out.Target = string(buf)
 	}
-	targetString := string(target[:])
+	out.Decode = opts.Decode
 
+	//this should be prettier
 	if opts.Base32 {
-		if opts.Decode {
-			byteResult, _ = base32.StdEncoding.DecodeString(targetString)
-			result = string(byteResult[:])
-		} else {
-			result = base32.StdEncoding.EncodeToString(target)
-		}
+		out.b32()
 	} else if opts.Base58 {
-		if opts.Decode {
-			result = string(b58.DecodeAlphabet(targetString, b58.BTCAlphabet)[:])
-		} else {
-			result = b58.EncodeAlphabet(target, b58.BTCAlphabet)
-		}
+		out.b58()
 	} else if opts.Base64 {
-		if opts.Decode {
-			byteResult, _ = base64.StdEncoding.DecodeString(targetString)
-			result = string(byteResult[:])
-		} else {
-			result = base64.StdEncoding.EncodeToString(target)
-		}
+		out.b64()
 	} else if opts.Base64URL {
-		if opts.Decode {
-			byteResult, _ = base64.URLEncoding.DecodeString(targetString)
-			result = string(byteResult[:])
-		} else {
-			result = base64.URLEncoding.EncodeToString(target)
-		}
+		out.b64u()
 	} else if opts.Base85 {
-		if opts.Decode {
-			buffer := make([]byte, len(target))
-			ascii85.Decode(buffer, target, true)
-			result = string(buffer)
-
-		} else {
-			buffer := make([]byte, ascii85.MaxEncodedLen(len(target)))
-			ascii85.Encode(buffer, target)
-			result = string(buffer)
-		}
+		out.b85()
 	} else {
 		parser.WriteHelp(os.Stderr)
 	}
 
-	if result != "" {
-		fmt.Println(result)
+	if out.Result != "" {
+		fmt.Println(out.Result)
+	}
+}
+
+func (b *Base) b32() {
+	if b.Decode {
+		byteResult, _ := base32.StdEncoding.DecodeString(b.Target)
+		b.Result = string(byteResult[:])
+	} else {
+		b.Result = base32.StdEncoding.EncodeToString([]byte(b.Target))
+	}
+}
+
+func (b *Base) b58() {
+	if b.Decode {
+		b.Result = string(b58.DecodeAlphabet(b.Target, b58.BTCAlphabet)[:])
+	} else {
+		b.Result = b58.EncodeAlphabet([]byte(b.Target), b58.BTCAlphabet)
+	}
+}
+
+func (b *Base) b64() {
+	if b.Decode {
+		byteResult, _ := base64.StdEncoding.DecodeString(b.Target)
+		b.Result = string(byteResult[:])
+	} else {
+		b.Result = base64.StdEncoding.EncodeToString([]byte(b.Target))
+	}
+}
+
+func (b *Base) b64u() {
+	if b.Decode {
+		byteResult, _ := base64.URLEncoding.DecodeString(b.Target)
+		b.Result = string(byteResult[:])
+	} else {
+		b.Result = base64.URLEncoding.EncodeToString([]byte(b.Target))
+	}
+}
+
+func (b *Base) b85() {
+	if b.Decode {
+		buffer := make([]byte, len(b.Target))
+		ascii85.Decode(buffer, []byte(b.Target), true)
+		b.Result = string(buffer)
+	} else {
+		buffer := make([]byte, ascii85.MaxEncodedLen(len(b.Target)))
+		ascii85.Encode(buffer, []byte(b.Target))
+		b.Result = string(buffer)
 	}
 }
